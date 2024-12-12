@@ -75,7 +75,7 @@ npm run ios
 # OR using Yarn
 yarn ios
 ```
-
+# Folder Structure
 MediMeet/  
 ├── src/  
 │   ├── assets/  
