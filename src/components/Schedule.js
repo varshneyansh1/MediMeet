@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   dateText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: colors.textPrimary,
   },

@@ -3,7 +3,11 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../constant/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const DoctorCard = ({ doctor, onAppointmentPress }) => {
+const DoctorCard = ({ doctor, navigation }) => {
+  const handleAppointmentPress = () => {
+    navigation.navigate('Appointment', { doctor }); // Pass doctor data
+  };
+
   return (
     <View style={styles.card}>
       {/* Doctor Image and Rating */}
@@ -23,7 +27,9 @@ const DoctorCard = ({ doctor, onAppointmentPress }) => {
         </Text>
 
         {/* Appointment Button */}
-        <TouchableOpacity style={styles.appointmentButton} onPress={onAppointmentPress}>
+        <TouchableOpacity
+          style={styles.appointmentButton}
+          onPress={handleAppointmentPress}>
           <Text style={styles.appointmentText}>Appointment</Text>
         </TouchableOpacity>
       </View>
@@ -42,9 +48,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 1,
-    elevation: 0.9,
+    elevation: 0.5,
     borderWidth: 0.1,
-    borderColor: "gray",
+    borderColor: 'gray',
   },
   imageContainer: {
     alignItems: 'center',
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   appointmentButton: {
-    backgroundColor: "#f7f8f8",
+    backgroundColor: '#f7f8f8',
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 5,

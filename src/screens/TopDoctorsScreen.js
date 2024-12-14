@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import doctorData from '../data/doctorData';
-import TopDoctorCard from '../components/TopDoctorCard';
 import colors from '../constant/colors';
 import DoctorCard from '../components/DoctorCard';
 
@@ -21,28 +20,30 @@ const TopDoctorsScreen = ({ navigation }) => {
   // Handle search functionality
   const handleSearch = (query) => {
     setSearchQuery(query);
-    if (query) {
+    if (query.trim()) {
+      // Filter all doctors based on the search query
       const filteredDoctors = doctorData.filter((doctor) =>
         doctor.name.toLowerCase().includes(query.toLowerCase())
       );
       setDoctors(filteredDoctors);
     } else {
-      setDoctors(doctorData.slice(0, 10)); // Reset to initial load
+      // Show the full list when search is cleared
+      setDoctors(doctorData);
     }
   };
 
   // Handle infinite scrolling
   const handleLoadMore = () => {
+    if (searchQuery.trim()) {
+      return; // Prevent infinite scroll while searching
+    }
+
     const nextPage = page + 1;
     const newDoctors = doctorData.slice(0, nextPage * 10);
     if (newDoctors.length > doctors.length) {
       setDoctors(newDoctors);
       setPage(nextPage);
     }
-  };
-
-  const navigateToAppointment = (doctor) => {
-    navigation.navigate('Appointment', { doctor});
   };
 
   return (
@@ -57,7 +58,12 @@ const TopDoctorsScreen = ({ navigation }) => {
 
       {/* Search Bar */}
       <View style={styles.searchBarContainer}>
-        <Icon name="search-outline" size={20} color={colors.textSecondary} style={styles.searchIcon} />
+        <Icon
+          name="search-outline"
+          size={20}
+          color={colors.textSecondary}
+          style={styles.searchIcon}
+        />
         <TextInput
           style={styles.searchBar}
           placeholder="Search Doctor"
@@ -72,10 +78,7 @@ const TopDoctorsScreen = ({ navigation }) => {
         data={doctors}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <DoctorCard
-            doctor={item}
-            onAppointmentPress={() => navigateToAppointment(item)}
-          />
+          <DoctorCard doctor={item} navigation={navigation} />
         )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
@@ -114,9 +117,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical:10,
+    paddingVertical: 10,
     borderWidth: 0.1,
-    borderColor: "gray",
+    borderColor: 'gray',
     marginBottom: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },

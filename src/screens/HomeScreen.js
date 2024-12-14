@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import Header from '../components/Header';
 import colors from '../constant/colors';
 import categoryData from '../data/categoryData';
@@ -7,7 +7,7 @@ import CategoryList from '../components/CategoryList';
 import DoctorList from '../components/DoctorList';
 import BottomTabNavigation from '../components/BottomTabNavigation';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState(categoryData);
   const [activeTab, setActiveTab] = useState('home');
 
@@ -24,10 +24,6 @@ const HomeScreen = () => {
     console.log('Search:', text);
   };
 
-  const handleAppointmentPress = () => {
-    alert('Your appointment has been booked successfully!');
-  };
-
   const handleTabPress = (tab) => {
     setActiveTab(tab);
     console.log('Active Tab:', tab);
@@ -35,9 +31,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-
-        style={styles.content}>
+      <KeyboardAvoidingView style={styles.content}>
         {/* Header */}
         <Header
           profileImage="https://png.pngtree.com/thumb_back/fh260/background/20230612/pngtree-in-the-style-of-2d-game-art-image_2884743.jpg"
@@ -48,7 +42,7 @@ const HomeScreen = () => {
         <CategoryList categories={categories} onCategoryPress={handleCategoryPress} />
 
         {/* Doctors */}
-        <DoctorList onAppointmentPress={handleAppointmentPress} />
+        <DoctorList navigation={navigation} />
       </KeyboardAvoidingView>
 
       {/* Bottom Navigation */}
